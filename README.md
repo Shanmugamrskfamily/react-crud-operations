@@ -2,7 +2,7 @@
 
 This project demonstrates a simple CRUD (Create, Read, Update, Delete) application built with React.js and a JSON Server for backend operations. The application allows managing contacts with functionalities to add, view, edit, and delete contacts.
 
-![App Screenshot](/images/screenshot.png)
+<img src='/public/images/screenshot.png'/>
 
 ## Features
 

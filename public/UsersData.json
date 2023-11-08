@@ -2,7 +2,7 @@
   "Users": [
     {
       "id": 1,
-      "name": "Leanne Graham",
+      "name": "Edited Contact",
       "email": "Sincere@april.biz",
       "address": {
         "street": "Kulas Light",
@@ -49,18 +49,6 @@
       "phone": "493-170-9623 x156"
     },
     {
-      "id": 5,
-      "name": "Chelsey Dietrich",
-      "email": "Lucio_Hettinger@annie.ca",
-      "address": {
-        "street": "Skiles Walks",
-        "suite": "Suite 351",
-        "city": "Roscoeview",
-        "zipcode": "33263"
-      },
-      "phone": "(254)954-1289"
-    },
-    {
       "id": 6,
       "name": "Mrs. Dennis Schulist",
       "email": "Karley_Dach@jasper.info",
@@ -86,7 +74,7 @@
     },
     {
       "id": 8,
-      "name": "Nicholas Runolfsdottir V",
+      "name": "Edited Contact",
       "email": "Sherwood@rosamond.me",
       "address": {
         "street": "Ellsworth Summit",
@@ -95,6 +83,18 @@
         "zipcode": "45169"
       },
       "phone": "586.493.6943 x140"
+    },
+    {
+      "name": "VIJETHA YERADULA",
+      "email": "vijetharamireddy25@gmail.com",
+      "phone": "1122334455",
+      "address": {
+        "street": "Victor Plains",
+        "suite": "MPKM",
+        "city": "Wisokyburgh",
+        "zipcode": "6000028"
+      },
+      "id": 9
     }
   ]
 }

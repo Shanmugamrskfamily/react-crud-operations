@@ -1,4 +1,5 @@
-[
+{
+  "Users": [
     {
       "id": 1,
       "name": "Leanne Graham",
@@ -13,15 +14,15 @@
     },
     {
       "id": 2,
-      "name": "Ervin Howell",
-      "email": "Shanna@melissa.tv",
+      "name": "SHANMUGAM",
+      "email": "shanmugamrskfamily@gmail.com",
       "address": {
-        "street": "Victor Plains",
-        "suite": "Suite 879",
-        "city": "Wisokyburgh",
-        "zipcode": "90566-7771"
+        "street": "New Cross Street",
+        "suite": "Vite 200",
+        "city": "Chennai",
+        "zipcode": "6000028"
       },
-      "phone": "010-692-6593 x09125"
+      "phone": "7845991892"
     },
     {
       "id": 3,
@@ -94,29 +95,6 @@
         "zipcode": "45169"
       },
       "phone": "586.493.6943 x140"
-    },
-    {
-      "id": 9,
-      "name": "Glenna Reichert",
-      "email": "Chaim_McDermott@dana.io",
-      "address": {
-        "street": "Dayna Park",
-        "suite": "Suite 449",
-        "city": "Bartholomebury",
-        "zipcode": "76495-3109"
-      },
-      "phone": "(775)976-6794 x41206"
-    },
-    {
-      "id": 10,
-      "name": "Clementina DuBuque",
-      "email": "Rey.Padberg@karina.biz",
-      "address": {
-        "street": "Kattie Turnpike",
-        "suite": "Suite 198",
-        "city": "Lebsackbury",
-        "zipcode": "31428-2261"
-      },
-      "phone": "024-648-3804"
     }
   ]
+}

@@ -1,107 +1,102 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { toast } from 'react-toastify';
 
 const AddContact = () => {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-      id: '',
-      name: '',
-      email: '',
-      phone: '',
-      address: {
-        suite: '',
-        street: '',
-        city: '',
-        zipcode: '',
-      },
-    });
-  
-    const getNextId = (data) => {
-      const ids = data.map(entry => entry.id);
-      const maxId = Math.max(...ids);
-  
-      return maxId + 1; // Generate the next unique ID
-    };
-  
-    useEffect(() => {
-      axios.get('/UsersData.json')
-        .then(response => {
-          const newId = getNextId(response.data);
-          setFormData({ ...formData, id: newId });
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-        });
-    }, [formData]); // Run when formData changes to update ID
-  
-    const handleChange = (e) => {
-      if (e.target.name.startsWith('address.')) {
-        const addressField = e.target.name.split('.')[1];
-        setFormData({
-          ...formData,
-          address: {
-            ...formData.address,
-            [addressField]: e.target.value,
-          },
-        });
-      } else {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-      }
-    };
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post('/UsersData.json', [formData]) 
-      .then(() => {
-        toast.success('Contact Added Successfully!')
+  const navigate = useNavigate();
+
+  const [newContact, setNewContact] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: {
+      street: '',
+      suite: '',
+      city: '',
+      zipcode: ''
+    }
+    // Add other fields as needed
+  });
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+
+    axios.post('http://localhost:8080/Users', newContact)
+      .then(response => {
+        toast.success('Contact Added Successfully ✅');
+        console.log('Contact added successfully:', response.data);
         navigate('/');
       })
       .catch(error => {
-        toast.error(`Error Adding New Contact: ${error}`);
+        toast.error(`Unable to Add Contact: ${error}`);
         console.error('Error adding contact:', error);
       });
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewContact(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setNewContact(prevState => ({
+      ...prevState,
+      address: {
+        ...prevState.address,
+        [name]: value
+      }
+    }));
+  };
+
   return (
-    <div className="container">
-      <h1>Add Contact</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">Name</label>
-          <input type="text" className="form-control" id="name" name="name" value={formData.name} onChange={handleChange} />
+    <div className="container cont-bg mt-4">
+      <div className="row">
+        <div className="col-md-6">
+          <img src="/images/addContact.jpg" alt="Add Contact" className="img-fluid" />
         </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">Email</label>
-          <input type="email" className="form-control" id="email" name="email" value={formData.email} onChange={handleChange} />
+        <div className="col-md-6 p-2">
+          <h2 className='text-center fw-bold head'>Add New Contact</h2>
+          <form onSubmit={handleFormSubmit}>
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">Name</label>
+              <input type="text" className="form-control" id="name" name="name" value={newContact.name} onChange={handleInputChange} />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">Email</label>
+              <input type="email" className="form-control" id="email" name="email" value={newContact.email} onChange={handleInputChange} />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="phone" className="form-label">Phone</label>
+              <input type="text" className="form-control" id="phone" name="phone" value={newContact.phone} onChange={handleInputChange} />
+            </div>
+            <h5 className='fw-bold'>Address</h5>
+            <div className="mb-3">
+              <label htmlFor="street" className="form-label">Street</label>
+              <input type="text" className="form-control" id="street" name="street" value={newContact.address.street} onChange={handleAddressChange} />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="suite" className="form-label">Suite</label>
+              <input type="text" className="form-control" id="suite" name="suite" value={newContact.address.suite} onChange={handleAddressChange} />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="city" className="form-label">City</label>
+              <input type="text" className="form-control" id="city" name="city" value={newContact.address.city} onChange={handleAddressChange} />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="zipcode" className="form-label">Zipcode</label>
+              <input type="text" className="form-control" id="zipcode" name="zipcode" value={newContact.address.zipcode} onChange={handleAddressChange} />
+            </div>
+            <div className='text-center'>
+            <button type="submit" className="btn btn-primary w-50">Add Contact</button>
+            </div>
+          </form>
         </div>
-        <div className="mb-3">
-          <label htmlFor="phone" className="form-label">Phone</label>
-          <input type="text" className="form-control" id="phone" name="phone" value={formData.phone} onChange={handleChange} />
-        </div>
-        <h5 className='fw-bold mb-2'>Address</h5>
-        <div className="mb-3">
-          <label htmlFor="address.suite" className="form-label">Suite</label>
-          <input type="text" className="form-control" id="address.suite" name="address.suite" value={formData.address.suite} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="address.street" className="form-label">Street</label>
-          <input type="text" className="form-control" id="address.street" name="address.street" value={formData.address.street} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="address.city" className="form-label">City</label>
-          <input type="text" className="form-control" id="address.city" name="address.city" value={formData.address.city} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="address.zipcode" className="form-label">Zip Code</label>
-          <input type="text" className="form-control" id="address.zipcode" name="address.zipcode" value={formData.address.zipcode} onChange={handleChange} />
-        </div>
-        <button type="submit" className="btn btn-primary">Add Contact</button>
-      </form>
+      </div>
     </div>
   );
 };

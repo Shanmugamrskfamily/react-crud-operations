@@ -1,81 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { toast } from 'react-toastify';
 
 const AllContacts = () => {
-  const [contacts, setContacts] = useState([]);
-  const navigate=useNavigate();
+    const [contacts, setContacts] = useState([]);
+    const navigate=useNavigate();
+  
+    useEffect(() => {
+      axios.get('http://localhost:8080/Users')
+        .then(response => {
+          setContacts(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }, []);
+  
+    const handleDelete = (id, name) => {
+        if (window.confirm(`Are you sure you want to delete ${name}?`)) {
+          axios.delete(`http://localhost:8080/Users/${id}`)
+            .then(response => {
+                toast.success(`Contact of ${name} Deleted Successfully!`)
+              setContacts(contacts.filter(contact => contact.id !== id));
+            })
+            .catch(error => {
+              console.error('Error deleting contact:', error);
+            });
+        }
+      };
+      const handleEdit=(id)=>{
+        localStorage.setItem('userId',id);
+        navigate('/editcontact');
+      }
 
-  useEffect(() => {
-    axios.get('/UsersData.json')
-      .then(response => {
-        setContacts(response.data);
-      })
-      .catch(error => {
-        // Handle error, e.g., setContacts([]) or show an error message
-        console.error('Error fetching contacts:', error);
-      });
-  }, []);
-
-  const handleEdit = (id) => {
-    // Handle edit functionality for a contact with a particular ID
-    console.log('Edit contact with ID:', id);
-    // Implement the edit functionality as needed
-  };
-
-  const handleDelete = (id) => {
-    // Handle delete functionality for a contact with a particular ID
-    console.log('Delete contact with ID:', id);
-    // Implement the delete functionality as needed
-  };
-
-  const handleAdd=()=>{
-    navigate('/addcontact');
-  }
-
-  return (
-    <div className="container">
-    <div className='mb-4'>
-      <h1 className='text-center'>All Contacts</h1>
-      <div className='text-end'>
-      <button className='btn btn-success' onClick={handleAdd}>Add Contact</button>
-      </div>
-      </div>
-      <div className="row">
-        {contacts.map(contact => (
-          <div className="col-md-4" key={contact.id}>
-            <div className="card mb-3">
-              <div className="card-body">
-                <h5 className="card-title"><span className='fw-bold'>Name:</span>{contact.name}</h5>
-                <p className="card-text"><span className='fw-bold'>Email:</span> {contact.email}</p>
-                <p className="card-text"><span className='fw-bold'>Phone No:</span> {contact.phone}</p>
-                <p className="card-text"> <span className='fw-bold'>Address:</span> {contact.address.suite},{contact.address.street}, {contact.address.city}, {contact.address.zipcode}</p>
-                <div className='text-center'>
-                  <button
-                    type="button"
-                    className="btn btn-primary me-2"
-                    onClick={() => handleEdit(contact.id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(contact.id)}
-                  >
-                    Delete
-                  </button>
+    return (
+      <div className="container mt-4 cont-bg">
+        <h1 className="mt-4 mb-3 text-center head">Contacts Manager</h1>
+        <div className='text-end'>
+            <Link to='/addcontact' className='btn btn-success'>Add Contact <i className="fa-solid fa-user-plus"></i></Link>
+        </div>
+        <div className="row mt-4">
+          {contacts.map(contact => (
+            
+            <div key={contact.id} className="col-md-4 mb-4">
+              <div className="card p-2">
+                <div className="card-body">
+                  <h5 className="card-title"><i className="fa-regular fa-user"></i> {contact.name}</h5>
+                  <p className="card-text"><strong><i className="fa-solid fa-at"></i> Email:</strong> {contact.email}</p>
+                  <p className="card-text"><strong><i className="fa-solid fa-phone"></i> Phone:</strong> {contact.phone}</p>
+                  <p className="card-text"><strong><i className="fa-regular fa-address-card"></i> Address:</strong> {contact.address.city}, {contact.address.street}, {contact.address.suite}, {contact.address.zipcode}</p>
+                  <div className='text-center'>
+                  <button className="btn btn-primary me-2" onClick={() => handleEdit(contact.id)} >Edit</button>
+                  <button className="btn btn-danger" onClick={() => handleDelete(contact.id, contact.name)}>Delete</button>
                   </div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  );
-};
-
-export default AllContacts;
+    );
+  };
+  
+  export default AllContacts;
